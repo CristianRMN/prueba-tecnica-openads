@@ -230,4 +230,16 @@ git clone https://github.com/CristianRMN/prueba-tecnica-openads
 ```
 
 - Descargar el .zip del proyecto desde gitHub.
+<img width="495" height="425" alt="zip" src="https://github.com/user-attachments/assets/f4f3de66-15b4-4b0a-8adf-0c830cc1e48d" />
+
+- Abrimos el proyecto (Recomensable usar Visual Studio Code)
+Sigue la guía para instalar Visual Studio: [guia oficial de instalacion de visual studio code](https://code.visualstudio.com/docs/setup/linux)
+
+- Nos vamos al terminal de nuestro IDE
+```bash
+composer install
+```
+Esto instalará todas las dependencias necesarias de Symfony.
+
+
 
