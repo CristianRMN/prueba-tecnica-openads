@@ -370,3 +370,65 @@ En la carpeta `/postman` encontrarás el archivo JSON con todos los endpoints li
 
 - [Cómo importar en Postman](https://learning.postman.com/docs/getting-started/importing-and-exporting-data/)
 - [Cómo importar en Insomnia](https://docs.insomnia.rest/insomnia/import-export-data)
+
+## Ejemplos de endPoints
+
+- Como autenticarse
+
+```bash
+POST http://localhost:8000/login
+Body:
+{
+  "username": "admin@openads.local",
+  "password": "admin"
+}
+```
+
+## Diagrama de entidades del proyecto
+
+```bash
+Proveedor ───< Tarifa >─── Medio
+   │
+   └──< Contenido >──< Enlace
+
+```
+
+---
+
+🚀 **Bonus / Futuro trabajo**
+
+Este proyecto se ha desarrollado en un plazo muy limitado de 48 horas, por lo que algunas mejoras no se han podido implementar todavía.
+
+1. Frontend en Angular
+
+El enunciado pedía un frontend en **Angular + Bootstrap 5**.
+Actualmente el backend está funcional con JWT, pero:
+
+- No dispongo de experiencia previa con Angular.
+
+En dos días **no es viable** implementar una aplicación completa para un proyecto de este tamaño.
+
+👉 Dado más tiempo, implementaría un frontend con las vistas mínimas:
+
+- Login (con **JWT**).
+
+- CRUD de proveedores, medios, tarifas y contenidos.
+
+- Informes con tablas filtrables.
+
+2. Tests automáticos
+
+- Incluir tests unitarios y de integración con **PHPUnit** para validar los servicios y controladores.
+
+- Añadir tests funcionales para los endpoints clave (login, CRUDs, informes).
+
+3. Seeds adicionales
+
+- Actualmente se cargan datos mínimos (usuario admin).
+
+- Mejorar con seeds de proveedores, medios, tarifas y contenidos de ejemplo para poder probar la app de forma inmediata.
+
+4. Corrección de bugs y validaciones extra
+
+En un plazo tan ajustado siempre pueden quedar errores o casos límite no contemplados.
+Añadir validaciones más estrictas en campos críticos (emails válidos, URLs que respondan 200 OK, normalización de dominios, etc.).
