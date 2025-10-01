@@ -358,3 +358,15 @@ En JWT con Symfony (y en general con cualquier sistema de autenticación basada 
 ---
 
 # Iniciamos el servidor
+- normalmente correrá en **http://localhost:8000**
+```bash
+#comando para iniciar el servidor
+symfony serve
+```
+
+## 📌 Colección Postman/Insomnia
+
+En la carpeta `/postman` encontrarás el archivo JSON con todos los endpoints listos para importar en Postman o Insomnia.
+
+- [Cómo importar en Postman](https://learning.postman.com/docs/getting-started/importing-and-exporting-data/)
+- [Cómo importar en Insomnia](https://docs.insomnia.rest/insomnia/import-export-data)
