@@ -241,5 +241,120 @@ composer install
 ```
 Esto instalará todas las dependencias necesarias de Symfony.
 
+- Necesitamos una serie de archivos (Que por razones de seguridad), no se suben a git.
+
+```bash
+#El .env
+Este archivo es esencial, ya que tiene todas las contraseñas y variables seguras de nuestro proyecto
+```
+
+- Crear el .env
+```bash
+#mkdir .env
+```
+
+- Contenido del archivo **.env**
+```bash
+###> symfony/framework-bundle ###
+APP_ENV=dev
+APP_SECRET=
+###< symfony/framework-bundle ###
+
+###> symfony/routing ###
+# Configure how to generate URLs in non-HTTP contexts, such as CLI commands.
+# See https://symfony.com/doc/current/routing.html#generating-urls-in-commands
+DEFAULT_URI=http://localhost
+###< symfony/routing ###
 
 
+###> doctrine/doctrine-bundle ###
+DATABASE_URL=(tu_ruta_db)
+###< doctrine/doctrine-bundle ###
+
+###> lexik/jwt-authentication-bundle ###
+JWT_SECRET_KEY=%kernel.project_dir%/config/jwt/private.pem
+JWT_PUBLIC_KEY=%kernel.project_dir%/config/jwt/public.pem
+JWT_PASSPHRASE=(tu_clave_secreta_JWT)
+###< lexik/jwt-authentication-bundle ###
+```
+
+Lo que necesitamos cambiar es **DATABASE_URL**.
+
+```bash
+#Ejemplo de ruta de base de datos
+DATABASE_URL="mysql://(usuario):(contraseña)@localhost:3307/(nombre de la BD)?serverVersion=mariadb-11.3.2&charset=utf8mb4"
+```
+
+- Crear la base de datos
+Primero nos vamos a posicionar otra vez en el terminal, en la ruta principal del proyecto y hacemos:
+
+```bash
+#ejecutamos
+php bin/console doctrine:database:create
+```
+
+Se introducirá el nombre de la base de datos que hayamos puesto en el archivo de configuracion **.env**.
+
+- Ejecutamos las migraciones
+```bash
+php bin/console doctrine:migrations:migrate
+```
+
+No hace falta hacer:
+```bash
+php bin/console make:migration
+```
+
+Porque al descargar el proyecto, descargamos también el paquete donde estaban todas las migraciones. Solo debemos de importarlas a la nueva **BD** que hemos creado.
+
+- cargar los datos de prueba
+```bash
+php bin/console doctrine:fixtures:load --append
+```
+
+Se cargarán los datos:
+```bash
+admin@openads.local / admin
+```
+
+Con esto, nos desentendemos de tener que registrar manualmente a un usuario a través de un **EndPoint** y solo nos encargamos del inicio de sesión.
+
+--- 
+
+# Autenticacion
+
+Ahora tenemos que hacer un par de ajustes, Las rutas están protegidas, ya que esto es una **API REST** interna y debe de estar protegida por los usuarios **ROLE_ADMIN**
+
+### Como establecer la configuracion
+
+Ejecutamos el siguiente comando:
+```bash
+#clave privada de nuestro JWT
+openssl genpkey -out config/jwt/private.pem -aes256 -algorithm rsa -pkeyopt rsa_keygen_bits:4096
+```
+
+Ahora la clave publica:
+```bash
+#Os pediran la contraseña de la clave privada
+openssl pkey -in config/jwt/private.pem -out config/jwt/public.pem -pubout
+```
+
+Importante haber creado previamente los archivos **.pem**, de lo contrario, dará error:
+```bash
+mkdir config/jwt/private.pem
+mkdir config/jwt/public.pem
+```
+
+- Poner la clave de la **contraseña privada** en el **.env**.
+```bash
+JWT_PASSPHRASE=(tu_clave_secreta_JWT)
+```
+
+En JWT con Symfony (y en general con cualquier sistema de autenticación basada en tokens):
+
+- Clave privada (private.pem) → se usa para firmar el token en el backend. Solo el servidor la conoce.
+- Clave pública (public.pem) → se usa para verificar la firma del token. Cualquier parte que reciba el token (por ejemplo, otro servicio) puede comprobar que es válido y no ha sido alterado.
+
+---
+
+# Iniciamos el servidor
