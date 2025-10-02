@@ -1,50 +1,25 @@
 security:
+    # cómo se encriptan las contraseñas
     password_hashers:
-        App\Entity\User:
-            algorithm: auto
+        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
 
-
+    # de dónde saca los usuarios (por defecto, memoria vacía)
     providers:
-        app_user_provider:
-            entity:
-                class: App\Entity\User
-                property: email
-
+        in_memory: { memory: null }
 
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
-
         main:
-            stateless: true
             lazy: true
-            provider: app_user_provider
-            json_login:
-                check_path: /login
-                username_path: email
-                success_handler: lexik_jwt_authentication.handler.authentication_success
-                failure_handler: lexik_jwt_authentication.handler.authentication_failure
+            provider: in_memory
 
-            jwt: ~
-
+            # por defecto, no hay login habilitado
+            # solo está el logout para que veas cómo se haría
+            logout: true
 
     access_control:
-        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }  
-        - { path: ^/contenidos, roles: ROLE_ADMIN }  
-        - { path: ^/medio, roles: ROLE_ADMIN }  
-        - { path: ^/proovedor, roles: ROLE_ADMIN }  
-        - { path: ^/tarifa, roles: ROLE_ADMIN }  
-
-
-when@test:
-    security:
-        password_hashers:
-            App\Entity\User:
-                algorithm: auto
-                cost: 4
-                time_cost: 3
-                memory_cost: 10
-
-
+        # - { path: ^/admin, roles: ROLE_ADMIN }
+        # - { path: ^/profile, roles: ROLE_USER }
