@@ -12,8 +12,6 @@ use App\Entity\Tarifa;
 
 
 #[Route('/tarifa')]
-#[IsGranted('IS_AUTHENTICATED_FULLY')]
-
 final class TarifaController extends AbstractController
 {
 
