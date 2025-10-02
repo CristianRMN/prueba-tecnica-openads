@@ -45,219 +45,56 @@ Requisitos previos:
 
 ---
 
-# Levantar Servicio sin docker
-Vamos a indicar, como levantar primero todo el servicio sin usar docker, después con él. 
+# Levantar servicios con **Docker**
 
-- Instalar LAMP(Linux, Apache, Mysql, PHP)
-Lo primero es tener instalado las herramientas necesarias para arrancar el servicio. Para que sea más sencillo, es recomendable instalar todo junto a través de LAMP.
+Me ha sido muy dificil, dado el poco tiempo que he tenido, pero estos son los pasos que hice para que me funcionases los endPoints en docker.
+
+1. descargamos el proyecto
+
+Nos descargamos el proyecto de git hub, ya sea clonandolo o con el .zip, da igual
+
+2. Colocamos el proyecto (IMPORTANTE SIN RENOMBRAR LA CARPETA), en donde queramos, junto con estos archivos/carpetas
+
+- docker/apache
+```bash
+Lo encontraréis dentro del proyecto que os descargasteis, tiene una configuracion apache que vamos a necesitar luego al montar el docker
+```
+
+- docker-compose.yml
+```bash
+Lo encontrareis tambien en el proyecto, lo dejais junto al proyecto descargado y el **docker/apache**
+```
+
+- creais un archivo llamado **.env.example** (TIENE QUE LLAMARSE ASÍ)
+```bash
+#El archivo ha de crearse tambien junto donde estan el proyecto, el docker compose y el docker/apache
+```
+Este es el formato a seguir
+
+<img width="789" height="265" alt="jejejejenrjfnre" src="https://github.com/user-attachments/assets/785ec377-3a7c-472b-a0bc-d755a60b4bcb" />
+
+### Contenido del .env.example
 
 ```bash
-#Actualizamos los paquetes 
-sudo apt update
-sudo apt upgrade -y
-```
+# In all environments, the following files are loaded if they exist,
+# the latter taking precedence over the former:
+#
+#  * .env                contains default values for the environment variables needed by the app
+#  * .env.local          uncommitted file with local overrides
+#  * .env.$APP_ENV       committed environment-specific defaults
+#  * .env.$APP_ENV.local uncommitted environment-specific overrides
+#
+# Real environment variables win over .env files.
+#
+# DO NOT DEFINE PRODUCTION SECRETS IN THIS FILE NOR IN ANY OTHER COMMITTED FILES.
+# https://symfony.com/doc/current/configuration/secrets.html
+#
+# Run "composer dump-env prod" to compile .env files for production use (requires symfony/flex >=1.2).
+# https://symfony.com/doc/current/best_practices.html#use-environment-variables-for-infrastructure-configuration
 
-- Instalamos en un solo comando **PHP, MYSQL y APACHE**
-```bash
-sudo apt install apache2 mysql-server php php-mysql libapache2-mod-php php-cli -y
-```
-
-- Habilitamos los servicios de **MYSQL** y **APACHE**
-```bash
-sudo systemctl enable apache2
-sudo systemctl start apache2
-sudo systemctl enable mysql
-sudo systemctl start mysql
-```
-
-- Creamos el usuario y la contraseña para la base de datos
-```bash
-sudo mysql
-CREATE USER 'usuario'@'localhost' IDENTIFIED BY 'password';
-FLUSH PRIVILEGES;
-EXIT;
-```
-
----
-
-### Composer y Symfony Cli
-
-***COMPOSER (OBLIGATORIO)***
-
-- Actualizamos el caché del administrador de paquetes e instalamos las dependencias requeridas
-```bash
-sudo apt update
-sudo apt install php-cli unzip
-```
-
-- Descargamos e instalamos composer
-```bash
-curl -sS https://getcomposer.org/installer | php
-```
-
-- Movemos composer a una carpeta que esté accesible para que esté disponible globalmente
-```bash
-sudo mv composer.phar /usr/local/bin/composer
-```
-
-- Verificamos la instalacion
-```bash
-composer --version
-```
-
-***SYMFONY CLI (OPCIONAL)***
-
-Symfony CLI es una herramienta opcional pero muy útil para trabajar con proyectos Symfony. Permite crear proyectos, levantar servidores locales, ejecutar comandos de consola y más.
-
-- Descargamos e instalamos Symfony CLI usando curl
-```bash
-curl -sS https://get.symfony.com/cli/installer | bash
-```
-
-- Movemos el binario a un directorio en tu PATH para que sea accesible desde cualquier terminal
-```bash
-sudo mv ~/.symfony/bin/symfony /usr/local/bin/symfony
-```
-
-- Verificamos que la instalación se ha realizado correctamente
-```bash
-symfony -v
-```
-
-***Angular y Bootstrap***
-
-Angular requiere Node.js y npm (el gestor de paquetes de Node). Instálalos desde la terminal:
-
-```bash
-# Actualizamos los repositorios
-sudo apt update
-
-# Instalamos Node.js y npm
-sudo apt install nodejs npm
-```
-
-- Verificamos la instalacion
-
-```bash
-node -v
-npm -v
-```
-
-#### Angular CLI
-Angular CLI es la herramienta oficial para crear, construir y ejecutar proyectos Angular.
-
-- Instalamos Angular CLI
-```bash
-sudo npm install -g @angular/cli
-```
-
-- Verificamos la instalacion
-```bash
-ng version
-```
-
-- Crear un proyecto en Angular
-```bash
-ng new nombre_proyecto
-cd nombre_proyecto
-```
-
-- Levantar el servidor de desarrollo
-```bash
-#Por defecto, el proyecto se levantará en http://localhost:4200.
-ng serve
-```
-
-### Bootstrap
-
-Está diseñado para facilitar el proceso de desarrollo de los sitios web responsivos y orientados a los dispositivos móviles. 
-
-- Instalamos Bootstrap
-```bash
-  npm install bootstrap
-```
-
-- Inclúyelo en angular.json en el apartado de **styles**:
-```bash
-"styles": [
-  "node_modules/bootstrap/dist/css/bootstrap.min.css",
-  "src/styles.css"
-],
-```
- --- 
-
- 
-# Levantar Servicio con docker
-Si quieres levantar la aplicación con contenedores, necesitarás Docker y Docker Compose instalados.  
-Sigue la guía oficial de Docker para Ubuntu: [Instalar Docker Engine](https://docs.docker.com/engine/install/ubuntu/)
-
-Una vez está instalado, podemos continuar:
-
-- Creamos una carpeta donde meteremos el **docker-compose.yaml**
-```bash
-mkdir (nombre de la carpeta)
-```
-
-- Creamos un archivo con extension **.yaml** llamado **docker-compose**. Puedes crearlo desde el terminal o manualmente. Dentro introducimos:
-
-```
-#El proyecto incluye un archivo `docker-compose.yml` para levantar la aplicación completa (backend, base de datos, etc.). Para arrancar los servicios:
-docker-compose up -d
-```
-
-- Para detener los servicios
-```bash
-docker-compose down
-```
-
-el comando **docker-compose up -d** levantará la base de datos MySQL, el servidor web y cualquier otro contenedor necesario para que la aplicación funcione.
-
----
-
-# Proyecto
-Una vez ya tenemos todos los servicios instalados y funcionando, con o sin docker, vamos de lleno al proyecto de symfony.
-
-### Descargar el proyecto
-
-Tenemos 2 formas de descargar el proyecto.
-- Git clone.
-```bash
-#instalar git primero, si no lo tienes en linux
-apt-get install git
-
-#clonar el repositorio en la carpeta que quieras
-git clone https://github.com/CristianRMN/prueba-tecnica-openads
-```
-
-- Descargar el .zip del proyecto desde gitHub.
-<img width="495" height="425" alt="zip" src="https://github.com/user-attachments/assets/f4f3de66-15b4-4b0a-8adf-0c830cc1e48d" />
-
-- Abrimos el proyecto (Recomensable usar Visual Studio Code)
-Sigue la guía para instalar Visual Studio: [guia oficial de instalacion de visual studio code](https://code.visualstudio.com/docs/setup/linux)
-
-- Nos vamos al terminal de nuestro IDE
-```bash
-composer install
-```
-Esto instalará todas las dependencias necesarias de Symfony.
-
-- Necesitamos una serie de archivos (Que por razones de seguridad), no se suben a git.
-
-```bash
-#El .env
-Este archivo es esencial, ya que tiene todas las contraseñas y variables seguras de nuestro proyecto
-```
-
-- Crear el .env
-```bash
-#mkdir .env
-```
-
-- Contenido del archivo **.env**
-```bash
 ###> symfony/framework-bundle ###
 APP_ENV=dev
-APP_SECRET=
+APP_SECRET=Prueba123
 ###< symfony/framework-bundle ###
 
 ###> symfony/routing ###
@@ -266,107 +103,108 @@ APP_SECRET=
 DEFAULT_URI=http://localhost
 ###< symfony/routing ###
 
+###> doctrine/doctrine-bundle ###
+# Format described at https://www.doctrine-project.org/projects/doctrine-dbal/en/latest/reference/configuration.html#connecting-using-a-url
+# IMPORTANT: You MUST configure your server version, either here or in config/packages/doctrine.yaml
+#
+# DATABASE_URL="sqlite:///%kernel.project_dir%/var/data_%kernel.environment%.db"
+# DATABASE_URL="mysql://app:!ChangeMe!@127.0.0.1:3306/app?serverVersion=8.0.32&charset=utf8mb4"
 
 ###> doctrine/doctrine-bundle ###
-DATABASE_URL=(tu_ruta_db)
+DATABASE_URL="mysql://symfony:symfony@db:3306/openads?serverVersion=mariadb-11.3.2&charset=utf8mb4"
 ###< doctrine/doctrine-bundle ###
 
 ###> lexik/jwt-authentication-bundle ###
 JWT_SECRET_KEY=%kernel.project_dir%/config/jwt/private.pem
 JWT_PUBLIC_KEY=%kernel.project_dir%/config/jwt/public.pem
-JWT_PASSPHRASE=(tu_clave_secreta_JWT)
+JWT_PASSPHRASE=prueba
 ###< lexik/jwt-authentication-bundle ###
+
 ```
 
-Lo que necesitamos cambiar es **DATABASE_URL**.
+Dejalo tal cual, no alteres nada y si lo haces, por ejemplo, modificando usuario o contraseña de la **url de la BD**, acuérdate de hacerlo igual en el docker compose.
 
+### Siguiente paso
+
+Lo primero es asegurarte de tener instalado docker.
+Una vez lo teneis, corremos el **contenedor docker-compose.yml**
+
+- Nos metemos dentro del contenedor ***symfony app***
 ```bash
-#Ejemplo de ruta de base de datos
-DATABASE_URL="mysql://(usuario):(contraseña)@localhost:3307/(nombre de la BD)?serverVersion=mariadb-11.3.2&charset=utf8mb4"
+docker exec -it symfony_app bash
 ```
 
-- Crear la base de datos
-Primero nos vamos a posicionar otra vez en el terminal, en la ruta principal del proyecto y hacemos:
+- Dentro ejecutamos esto.
+```bash
+php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+php composer-setup.php
+php -r "unlink('composer-setup.php');"
+mv composer.phar /usr/local/bin/composer
+composer --version
+```
+
+Son comandos para:
+1. Descargar composer
+2. Posicionar composer en un lugar que sea accesible y poder acceder globalmente
+3. Comprobar que esté instalado
+
+### Archivo .env
+- Debemos copiar nuestro **.env.example** en un nuevo archivo **.env** para que symfony lea las variables de entorno, como la URl de la base de datos.
+```bash
+cp ../../.env.example .env
+```
+
+Modifica la ruta segun donde estes posicionado.
+
+### Instalar composer
+- Necesitamos instalar composer, pese a que está en el proyecto.
+```bash
+#comando necesario para instalar composer
+apt update && apt install -y unzip zip git
+```
+
+- Luego ejecutamos
+```bash
+composer install
+```
+
+Si hay algún error, seguramente sea el .env que no lo habeis copiado correctamente.
+
+- limpiamos la base de datos
 
 ```bash
-#ejecutamos
+#salimos del contenedor de symfony
+exit
+#Entramos en el de mysql
+docker exec -it mysql_db mysql -u root -p
+```
+
+Nos pedirá contraseña e introducimos root.
+
+```bash
+#ejecutamos lo siguiente
+DROP DATABASE openads;
+```
+
+### Migraciones
+- Volvemos a entrar en el contenedor de symfony
+```bash
+
+#comando para crear la base de datos desde symfony
 php bin/console doctrine:database:create
+
+#comando para importar los esquemas de las tablas a symfony (Si os da error o tarda, probad de nuevo)
+php bin/console doctrine:schema:create
+
+#Comando para migrar el usuario y contraseña a la tabla user 
+php bin/console doctrine:fixtures:load
 ```
 
-Se introducirá el nombre de la base de datos que hayamos puesto en el archivo de configuracion **.env**.
-
-- Ejecutamos las migraciones
-```bash
-php bin/console doctrine:migrations:migrate
-```
-
-No hace falta hacer:
-```bash
-php bin/console make:migration
-```
-
-Porque al descargar el proyecto, descargamos también el paquete donde estaban todas las migraciones. Solo debemos de importarlas a la nueva **BD** que hemos creado.
-
-- cargar los datos de prueba
-```bash
-php bin/console doctrine:fixtures:load --append
-```
-
-Se cargarán los datos:
-```bash
-admin@openads.local / admin
-```
-
-Con esto, nos desentendemos de tener que registrar manualmente a un usuario a través de un **EndPoint** y solo nos encargamos del inicio de sesión.
-
---- 
-
-# Autenticacion
-
-Ahora tenemos que hacer un par de ajustes, Las rutas están protegidas, ya que esto es una **API REST** interna y debe de estar protegida por los usuarios **ROLE_ADMIN**
-
-### Como establecer la configuracion
-
-Ejecutamos el siguiente comando:
-```bash
-#clave privada de nuestro JWT
-openssl genpkey -out config/jwt/private.pem -aes256 -algorithm rsa -pkeyopt rsa_keygen_bits:4096
-```
-
-Ahora la clave publica:
-```bash
-#Os pediran la contraseña de la clave privada
-openssl pkey -in config/jwt/private.pem -out config/jwt/public.pem -pubout
-```
-
-Importante haber creado previamente los archivos **.pem**, de lo contrario, dará error:
-```bash
-mkdir config/jwt/private.pem
-mkdir config/jwt/public.pem
-```
-
-- Poner la clave de la **contraseña privada** en el **.env**.
-```bash
-JWT_PASSPHRASE=(tu_clave_secreta_JWT)
-```
-
-En JWT con Symfony (y en general con cualquier sistema de autenticación basada en tokens):
-
-- Clave privada (private.pem) → se usa para firmar el token en el backend. Solo el servidor la conoce.
-- Clave pública (public.pem) → se usa para verificar la firma del token. Cualquier parte que reciba el token (por ejemplo, otro servicio) puede comprobar que es válido y no ha sido alterado.
-
----
-
-# Iniciamos el servidor
-- normalmente correrá en **http://localhost:8000**
-```bash
-#comando para iniciar el servidor
-symfony serve
-```
 
 ## 📌 Colección Postman/Insomnia
 
 En la carpeta `/postman` encontrarás el archivo JSON con todos los endpoints listos para importar en Postman o Insomnia.
+El unico que no va a funcionar es el de Login, por fallos que me dio y el poco tiempo que se me proporcionó.
 
 - [Cómo importar en Postman](https://learning.postman.com/docs/getting-started/importing-and-exporting-data/)
 - [Cómo importar en Insomnia](https://docs.insomnia.rest/insomnia/import-export-data)
@@ -392,8 +230,6 @@ Proveedor ───< Tarifa >─── Medio
    └──< Contenido >──< Enlace
 
 ```
-
----
 
 🚀 **Bonus / Futuro trabajo**
 
