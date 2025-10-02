@@ -14,7 +14,6 @@ use App\Model\PagoProovedor;
 
 
 #[Route('/contenidos')]
-#[IsGranted('IS_AUTHENTICATED_FULLY')]
 final class ContenidosController extends AbstractController
 {
 
