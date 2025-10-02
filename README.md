@@ -65,15 +65,74 @@ Lo encontraréis dentro del proyecto que os descargasteis, tiene una configuraci
 Lo encontrareis tambien en el proyecto, lo dejais junto al proyecto descargado y el **docker/apache**
 ```
 
-<img width="789" height="265" alt="jejejejenrjfnre" src="https://github.com/user-attachments/assets/785ec377-3a7c-472b-a0bc-d755a60b4bcb" />
+- Creamos un .ev
+```bash
+#Sin iniciar el docker compose ni nada, simplemente nos metemos dentro del proyecto descargado
+prueba-tecnica-openads-main
+```
+Debemos de ver estas carpetas.
 
+<img width="725" height="474" alt="jajajaja" src="https://github.com/user-attachments/assets/9159d577-95a5-45cb-bb8b-63ac1fb60741" />
 
-Dejalo tal cual, no alteres nada y si lo haces, por ejemplo, modificando usuario o contraseña de la **url de la BD**, acuérdate de hacerlo igual en el docker compose.
+Creamos un archivo **.env** con esta información en esa ruta.
+
+```bash
+# In all environments, the following files are loaded if they exist,
+# the latter taking precedence over the former:
+#
+#  * .env                contains default values for the environment variables needed by the app
+#  * .env.local          uncommitted file with local overrides
+#  * .env.$APP_ENV       committed environment-specific defaults
+#  * .env.$APP_ENV.local uncommitted environment-specific overrides
+#
+# Real environment variables win over .env files.
+#
+# DO NOT DEFINE PRODUCTION SECRETS IN THIS FILE NOR IN ANY OTHER COMMITTED FILES.
+# https://symfony.com/doc/current/configuration/secrets.html
+#
+# Run "composer dump-env prod" to compile .env files for production use (requires symfony/flex >=1.2).
+# https://symfony.com/doc/current/best_practices.html#use-environment-variables-for-infrastructure-configuration
+
+###> symfony/framework-bundle ###
+APP_ENV=dev
+APP_SECRET=Prueba123
+###< symfony/framework-bundle ###
+
+###> symfony/routing ###
+# Configure how to generate URLs in non-HTTP contexts, such as CLI commands.
+# See https://symfony.com/doc/current/routing.html#generating-urls-in-commands
+DEFAULT_URI=http://localhost
+###< symfony/routing ###
+
+###> doctrine/doctrine-bundle ###
+# Format described at https://www.doctrine-project.org/projects/doctrine-dbal/en/latest/reference/configuration.html#connecting-using-a-url
+# IMPORTANT: You MUST configure your server version, either here or in config/packages/doctrine.yaml
+#
+# DATABASE_URL="sqlite:///%kernel.project_dir%/var/data_%kernel.environment%.db"
+# DATABASE_URL="mysql://app:!ChangeMe!@127.0.0.1:3306/app?serverVersion=8.0.32&charset=utf8mb4"
+
+###> doctrine/doctrine-bundle ###
+DATABASE_URL="mysql://symfony:symfony@db:3306/openads?serverVersion=mariadb-11.3.2&charset=utf8mb4"
+###< doctrine/doctrine-bundle ###
+
+###> lexik/jwt-authentication-bundle ###
+JWT_SECRET_KEY=%kernel.project_dir%/config/jwt/private.pem
+JWT_PUBLIC_KEY=%kernel.project_dir%/config/jwt/public.pem
+JWT_PASSPHRASE=prueba
+###< lexik/jwt-authentication-bundle ###
+```
+
+Una vez lo habeis creado, volvemos a la ruta donde tenemos todas las carpetas. Debemos tener esta imagen 
+<img width="788" height="221" alt="jejejej" src="https://github.com/user-attachments/assets/717ee1f3-d79b-4ae3-9368-57b2bee8d5f2" />
+
 
 ### Siguiente paso
 
 Lo primero es asegurarte de tener instalado docker.
 Una vez lo teneis, corremos el **contenedor docker-compose.yml**
+```bash
+docker compose up -d
+```
 
 - Nos metemos dentro del contenedor ***symfony app***
 ```bash
