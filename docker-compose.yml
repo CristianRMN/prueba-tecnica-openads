@@ -1,0 +1,35 @@
+services:
+  app:
+    image: php:8.2-apache
+    container_name: symfony_app
+    ports:
+      - "8000:80"
+    volumes:
+      - ./prueba-tecnica-openads-main/prueba-tecnica-openads-main:/var/www/html
+      - ./docker/apache/000-default.conf:/etc/apache2/sites-enabled/000-default.conf
+
+    depends_on:
+      - db
+    command: bash -c "a2enmod rewrite && docker-php-ext-install pdo pdo_mysql && apache2-foreground"
+
+  db:
+   image: mysql:8.0.37
+   container_name: mysql_db
+   environment:
+     MYSQL_ROOT_PASSWORD: root
+     MYSQL_DATABASE: openads
+     MYSQL_USER: symfony
+     MYSQL_PASSWORD: symfony
+   ports:
+     - "3307:3306"
+
+  phpmyadmin:
+    container_name: phpmyadmin
+    image: phpmyadmin/phpmyadmin
+    ports:
+    - '8080:80'
+    restart: always
+    environment:
+      PMA_HOST: db
+    depends_on:
+    - db
