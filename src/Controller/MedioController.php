@@ -12,8 +12,6 @@ use App\Entity\Medio;
 
 
 #[Route('/medio')]
-#[IsGranted('IS_AUTHENTICATED_FULLY')]
-
 final class MedioController extends AbstractController
 {
 
