@@ -14,8 +14,6 @@ use App\Entity\Proovedor;
 
 
 #[Route('/proovedor')]
-#[IsGranted('IS_AUTHENTICATED_FULLY')]
-
 final class ProovedorController extends AbstractController
 {
     
