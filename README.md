@@ -51,9 +51,13 @@ Me ha sido muy dificil, dado el poco tiempo que he tenido, pero estos son los pa
 
 1. descargamos el proyecto
 
-Nos descargamos el proyecto de git hub, ya sea clonandolo o con el .zip, da igual
+Nos descargamos el proyecto de git hub, clonandolo.
 
-2. Colocamos el proyecto (IMPORTANTE SIN RENOMBRAR LA CARPETA), en donde queramos, junto con estos archivos/carpetas
+```bash
+git clone (nombre del repositorio)
+```
+
+2. Colocamos el proyecto (IMPORTANTE SIN RENOMBRAR LA CARPETA, Y SI LO HACES, CÁMBIALO EN EL DOCKER-COMPOSE.YML), en donde queramos, junto con estos archivos/carpetas
 
 - docker/apache
 ```bash
@@ -65,11 +69,23 @@ Lo encontraréis dentro del proyecto que os descargasteis, tiene una configuraci
 Lo encontrareis tambien en el proyecto, lo dejais junto al proyecto descargado y el **docker/apache**
 ```
 
+- Creamos un .htaccess dentro de la carpeta /public donde esta el index.php en symfony.
+```bash
+#Symfony necesita este archivo para que Apache redirija correctamente las rutas:
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*)$ index.php [QSA,L]
+</IfModule>
+```
+
 - Creamos un .ev
 ```bash
 #Sin iniciar el docker compose ni nada, simplemente nos metemos dentro del proyecto descargado
 prueba-tecnica-openads-main
 ```
+
 Debemos de ver estas carpetas.
 
 <img width="725" height="474" alt="jajajaja" src="https://github.com/user-attachments/assets/9159d577-95a5-45cb-bb8b-63ac1fb60741" />
