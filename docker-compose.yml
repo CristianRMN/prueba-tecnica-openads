@@ -5,7 +5,7 @@ services:
     ports:
       - "8000:80"
     volumes:
-      - ./prueba-tecnica-openads-main/prueba-tecnica-openads-main:/var/www/html
+      - ./prueba-tecnica-openads:/var/www/html
       - ./docker/apache/000-default.conf:/etc/apache2/sites-enabled/000-default.conf
 
     depends_on:
